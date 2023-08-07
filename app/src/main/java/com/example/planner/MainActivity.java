@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 
 import com.example.planner.DB.DatabaseController;
 import com.example.planner.calendar.CalendarFragment;
+import com.example.planner.dialogs.CreationDialog;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -27,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setup database controller
-
 
         setContentView(R.layout.activity_main);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setBackground(null);
         bottomNavigationView.getMenu().getItem(2).setEnabled(false);
 
-       homeFragment = new HomeFragment();
+       homeFragment = new HomeFragment(dbc);
        //searchFragment = new SearchFragment();
        calendarFragment = new CalendarFragment();
        //settingsFragment = new SettingsFragment();
