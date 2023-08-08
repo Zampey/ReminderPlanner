@@ -1,4 +1,4 @@
-# Planner (#head)
+# Planner
 
 Planner je android aplikace, vytvořena za účelem pomoct lidem lépe organizovat svůj čas.
 Tato aplikace vám pomůže ukládat si své připomínky, nebo úkoly, a následně vás o těchto událostech v dostatečném předstihu informuje
