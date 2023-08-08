@@ -12,7 +12,7 @@ Tato aplikace vám pomůže ukládat si své připomínky, nebo úkoly, a násle
 - Android verze 6 +
 
 ## Instalace
->-Aplikace podporuje Android 6 a vyšší
->-Stáhněte si aplikaci kliknutím na odkaz a nainstalujte na vašem zařízení
+>Aplikace podporuje Android 6 a vyšší. 
+>Stáhněte si aplikaci kliknutím na odkaz a nainstalujte na vašem zařízení
 
 [Stáhnout aplikaci](https://github.com/zampey) (momentálně není k dispozici)
