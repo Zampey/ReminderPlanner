@@ -1,6 +1,7 @@
 package com.example.planner.calendar;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,14 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.planner.DB.DatabaseController;
 import com.example.planner.MainActivity;
 import com.example.planner.R;
 import com.example.planner.model.ReminderModel;
+
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -45,6 +49,7 @@ public class CalendarFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        dbc.databaseOutput();
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.calendar_fragment, container, false);
         //variables initialization
@@ -92,6 +97,23 @@ public class CalendarFragment extends Fragment {
         EventDecorator eventDecorator = new EventDecorator(requireContext(), getHighlightedDates());
         // Přidejte dekoraci do kalendáře
         calendarView.addDecorator(eventDecorator);
+
+
+        calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                if (selected) {
+                    // Zde získáme seznam připomínek pro vybraný den
+                    List<ReminderModel> remindersForDay = dbc.getRemindersForDay(date);
+                    RecyclerView recyclerView = rootView.findViewById(R.id.calendarRecyclerView);
+                    CalendarRecyclerViewAdapter adapter = new CalendarRecyclerViewAdapter(remindersForDay);
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    Log.d("TAG", "onDateSelected: "+ remindersForDay);
+
+                }
+            }
+        });
 
 
         // Return the root view

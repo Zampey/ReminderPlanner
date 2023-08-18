@@ -13,6 +13,7 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -204,5 +205,40 @@ public class DatabaseController{
         db.close();
 
         Log.d("TestDatabaseInsert", "Testovací připomínka byla úspěšně vložena do databáze.");
+    }
+    @SuppressLint("Range")
+    public List<ReminderModel> getRemindersForDay(CalendarDay calendarDay) {
+        List<ReminderModel> reminders = new ArrayList<>();
+
+        SQLiteDatabase db = reminderDbHelper.getReadableDatabase();
+
+        // Získat dnešní datum ve formátu "YYYY-MM-DD"
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String todayDate = dateFormat.format(calendarDay.getDate());
+
+        // SQL dotaz, který načte poslední připomínky s jejich posledními datumy, které odpovídají dnešnímu dni
+        String query = "SELECT r.id, r.title, r.description, MAX(rd.date) AS max_date " +
+                "FROM reminders r " +
+                "JOIN reminder_dates rd ON r.id = rd.reminder_id " +
+                "WHERE rd.date = ? " +
+                "GROUP BY r.id, r.title, r.description";
+
+        Cursor cursor = db.rawQuery(query, new String[]{todayDate});
+
+        if (cursor.moveToFirst()) {
+            do {
+                String title = cursor.getString(cursor.getColumnIndex("title"));
+                String description = cursor.getString(cursor.getColumnIndex("description"));
+                String date = cursor.getString(cursor.getColumnIndex("max_date"));
+
+                ReminderModel reminder = new ReminderModel(title, description, date);
+                reminders.add(reminder);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return reminders;
     }
 }
