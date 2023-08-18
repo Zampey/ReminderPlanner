@@ -1,7 +1,6 @@
 package com.example.planner;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.planner.DB.DatabaseController;
 import com.example.planner.model.DaySchedule;
 import com.example.planner.model.ReminderModel;
+import com.example.planner.schedule.RecyclerViewAdapter;
 import com.example.planner.schedule.ReminderHelper;
 
 import java.text.SimpleDateFormat;

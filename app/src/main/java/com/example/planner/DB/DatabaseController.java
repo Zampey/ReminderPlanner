@@ -8,10 +8,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.planner.model.ReminderModel;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class DatabaseController{
@@ -138,6 +140,31 @@ public class DatabaseController{
         cursor.close();
         db.close();
         return reminderList;
+    }
+    @SuppressLint("Range")
+    public List<ReminderModel> getAllReminders(){
+        SQLiteDatabase db = reminderDbHelper.getReadableDatabase();
+        List<ReminderModel> reminders = new ArrayList<>();
+        String query = "SELECT reminders.id, title, description, date " +
+                "FROM reminders " +
+                "JOIN reminder_dates ON reminders.id = reminder_dates.reminder_id";
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String title = cursor.getString(cursor.getColumnIndex("title"));
+                String description = cursor.getString(cursor.getColumnIndex("description"));
+                String date = cursor.getString(cursor.getColumnIndex("date"));
+
+                ReminderModel reminder = new ReminderModel(title, description, date);
+                reminders.add(reminder);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return reminders;
     }
 
     public void insertTestReminder(Context context) {

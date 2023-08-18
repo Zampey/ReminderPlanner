@@ -1,4 +1,4 @@
-package com.example.planner;
+package com.example.planner.schedule;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.planner.R;
 import com.example.planner.model.DaySchedule;
 import com.example.planner.model.ReminderModel;
 

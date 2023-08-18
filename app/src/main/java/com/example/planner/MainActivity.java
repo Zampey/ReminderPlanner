@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
        homeFragment = new HomeFragment(dbc);
        //searchFragment = new SearchFragment();
-       calendarFragment = new CalendarFragment();
+       calendarFragment = new CalendarFragment(dbc);
        //settingsFragment = new SettingsFragment();
 
         switchToFragment(homeFragment);
