@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/dialog_shape"
     >
 
     <EditText
@@ -12,11 +13,12 @@
         android:layout_height="59dp"
 
         android:layout_marginStart="35dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="35dp"
         android:hint="Datum (DD.MM.RRRR)"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="48dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <EditText

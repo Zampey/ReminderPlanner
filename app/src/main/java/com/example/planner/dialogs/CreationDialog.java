@@ -69,7 +69,10 @@ public class CreationDialog extends AppCompatDialogFragment {
                 dataTransfer(title.getText(),description.getText(),date.getText(),month.isChecked(),week.isChecked(),days5.isChecked(),days3.isChecked(),day1.isChecked());
             }
         });
-        return builder.create();
+        AlertDialog ad = builder.create();
+        ad.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        return ad;
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
