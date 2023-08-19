@@ -126,7 +126,7 @@ public class CalendarFragment extends Fragment {
 
         for (ReminderModel reminder : reminders) {
             Calendar calendar = Calendar.getInstance();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
             try {
                 Date date = sdf.parse(reminder.getDate());
                 calendar.setTime(date);

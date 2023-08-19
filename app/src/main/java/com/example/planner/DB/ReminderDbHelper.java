@@ -8,7 +8,7 @@ public class ReminderDbHelper extends SQLiteOpenHelper {
 
     // define database scheme
     private static final String DATABASE_NAME = "reminder.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
 
     public ReminderDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -20,7 +20,8 @@ public class ReminderDbHelper extends SQLiteOpenHelper {
         String createReminderTable = "CREATE TABLE reminders (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "title TEXT," +
-                "description TEXT" +
+                "description TEXT," +
+                "final_date TEXT"+
                 ")";
         db.execSQL(createReminderTable);
 

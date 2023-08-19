@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.example.planner.DB.DatabaseController;
+import com.example.planner.DB.ReminderDbHelper;
 import com.example.planner.calendar.CalendarFragment;
 import com.example.planner.dialogs.CreationDialog;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout fragmentContainer;
     private FloatingActionButton addReminder;
 
-    DatabaseController dbc = new DatabaseController(this);
+    DatabaseController dbc = new DatabaseController( new ReminderDbHelper(this));
 
     private HomeFragment homeFragment;
     //private SearchFragment searchFragment;

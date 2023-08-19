@@ -116,7 +116,7 @@ public class CreationDialog extends AppCompatDialogFragment {
             }
 
             // Předáme zformátované CalendarDay instance do saveReminder metody
-            dbc.saveReminder(title.toString(), description.toString(), listOfDates);
+            dbc.saveReminder(datePrepare(endDate.getDate().toString()), title.toString(), description.toString(), listOfDates);
         }
     }
 

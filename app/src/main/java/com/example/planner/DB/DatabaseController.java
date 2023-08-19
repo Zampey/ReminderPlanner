@@ -18,20 +18,20 @@ import java.util.List;
 import java.util.Locale;
 
 public class DatabaseController{
-    private Context context;
+
     private ReminderDbHelper reminderDbHelper;
-    public DatabaseController(Context context) {
-        this.context = context;
-        this.reminderDbHelper = new ReminderDbHelper(context);
+    public DatabaseController(ReminderDbHelper reminderDbHelper) {
+        this.reminderDbHelper = reminderDbHelper;
     }
 
-    public void saveReminder(String title, String description, ArrayList<String> datesList){
+    public void saveReminder(String finalDate, String title, String description, ArrayList<String> datesList){
         // getting writable DB
         SQLiteDatabase db = reminderDbHelper.getWritableDatabase();
         // preparing values for insert into "reminders"
         ContentValues reminderValues = new ContentValues();
         reminderValues.put("title", title);
         reminderValues.put("description", description);
+        reminderValues.put("final_date", finalDate);
         // inserting into "reminders", and getting ID
         long reminderId = db.insert("reminders", null, reminderValues);
 
@@ -146,16 +146,15 @@ public class DatabaseController{
     public List<ReminderModel> getAllReminders(){
         SQLiteDatabase db = reminderDbHelper.getReadableDatabase();
         List<ReminderModel> reminders = new ArrayList<>();
-        String query = "SELECT reminders.id, title, description, date " +
-                "FROM reminders " +
-                "JOIN reminder_dates ON reminders.id = reminder_dates.reminder_id";
+        String query = "SELECT reminders.id, title, description, final_date " +
+                "FROM reminders ";
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
             do {
                 String title = cursor.getString(cursor.getColumnIndex("title"));
                 String description = cursor.getString(cursor.getColumnIndex("description"));
-                String date = cursor.getString(cursor.getColumnIndex("date"));
+                String date = cursor.getString(cursor.getColumnIndex("final_date"));
 
                 ReminderModel reminder = new ReminderModel(title, description, date);
                 reminders.add(reminder);
@@ -216,12 +215,10 @@ public class DatabaseController{
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         String todayDate = dateFormat.format(calendarDay.getDate());
 
-        // SQL dotaz, který načte poslední připomínky s jejich posledními datumy, které odpovídají dnešnímu dni
-        String query = "SELECT r.id, r.title, r.description, MAX(rd.date) AS max_date " +
-                "FROM reminders r " +
-                "JOIN reminder_dates rd ON r.id = rd.reminder_id " +
-                "WHERE rd.date = ? " +
-                "GROUP BY r.id, r.title, r.description";
+        // SQL dotaz, který načte připomínky s dnešním finálním datem
+        String query = "SELECT id, title, description, final_date " +
+                "FROM reminders " +
+                "WHERE final_date = ?";
 
         Cursor cursor = db.rawQuery(query, new String[]{todayDate});
 
@@ -229,9 +226,9 @@ public class DatabaseController{
             do {
                 String title = cursor.getString(cursor.getColumnIndex("title"));
                 String description = cursor.getString(cursor.getColumnIndex("description"));
-                String date = cursor.getString(cursor.getColumnIndex("max_date"));
+                String finalDate = cursor.getString(cursor.getColumnIndex("final_date"));
 
-                ReminderModel reminder = new ReminderModel(title, description, date);
+                ReminderModel reminder = new ReminderModel(title, description, finalDate);
                 reminders.add(reminder);
             } while (cursor.moveToNext());
         }
@@ -241,4 +238,13 @@ public class DatabaseController{
 
         return reminders;
     }
+
+    public void deleteRemindersTable() {
+        SQLiteDatabase db = reminderDbHelper.getWritableDatabase();
+        // SQL dotaz pro vymazání tabulky "reminders"
+        String query = "DROP TABLE IF EXISTS reminders";
+        db.execSQL(query);
+        db.close();
+    }
+
 }

@@ -27,8 +27,6 @@ import java.util.Locale;
 
 public class HomeFragment extends Fragment {
     private DatabaseController dbc;
-    private Button testBtn;
-    private ListView listView;
     public HomeFragment(DatabaseController dbc) {
         this.dbc = dbc;
     }
