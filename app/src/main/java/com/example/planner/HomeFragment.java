@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.planner.DB.DatabaseController;
+import com.example.planner.model.DaySchedule;
 import com.example.planner.model.ReminderModel;
-import com.example.planner.schedule.DateReminderListAdapter;
-import com.example.planner.schedule.DividerItemDecoration;
+import com.example.planner.schedule.RecyclerViewAdapter;
 import com.example.planner.schedule.ReminderHelper;
 
 import java.text.SimpleDateFormat;
@@ -27,8 +27,6 @@ import java.util.Locale;
 
 public class HomeFragment extends Fragment {
     private DatabaseController dbc;
-    private Button testBtn;
-    private ListView listView;
     public HomeFragment(DatabaseController dbc) {
         this.dbc = dbc;
     }
@@ -39,7 +37,7 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.home_fragment, container, false);
         ArrayList<ReminderModel> reminderList = dbc.getNextSevenDays();
-
+        //list s připomínkami
         List<ArrayList<ReminderModel>> remindersLists = ReminderHelper.groupRemindersByDay(reminderList);
 
         // Vytvoření seznamu dat pro nadpisy v RecyclerView
@@ -50,16 +48,17 @@ public class HomeFragment extends Fragment {
             dates.add((i == 0) ? "Dnes" : (i == 1) ? "Zítra" : sdf.format(today.getTime()));
             today.add(Calendar.DATE, 1);
         }
+        List<DaySchedule> dayScheduleList = new ArrayList<>();
+        for (int i = 0; i < dates.size(); i++) {
+            DaySchedule ds = new DaySchedule(dates.get(i),remindersLists.get(i));
+            dayScheduleList.add(ds);
+        }
 
-        // Nastavení RecyclerView s adaptérem DateReminderListAdapter
         RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        DateReminderListAdapter adapter = new DateReminderListAdapter(getContext(), dates, remindersLists);
-        recyclerView.setAdapter(adapter);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(dayScheduleList);
 
-        // Přidejte DividerItemDecoration k RecyclerView
-        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext());
-        recyclerView.addItemDecoration(itemDecoration);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerView.setAdapter(adapter);
 
 
         // Return the root view

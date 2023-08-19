@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#363636" /> <!-- Barva pozadí -->
+    <corners android:radius="20dp" /> <!-- Zaoblené rohy, nastavte poloměr podle potřeby -->
+    <stroke
+        android:width="2dp"
+    android:color="#B53E3E3E"
+    />
+</shape>
