@@ -2,6 +2,7 @@ package com.example.planner;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -48,11 +49,17 @@ public class MyAlarmReceiver extends BroadcastReceiver {
             Calendar calendar = Calendar.getInstance();
             int hour = calendar.get(Calendar.HOUR_OF_DAY); // Získání hodin v 24h formátu
             if (hour == 10 || hour == 17) {
+                Intent appIntent = new Intent(context, MainActivity.class);
+                appIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP); // Nastaví způsob spuštění aktivity
+
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, appIntent, PendingIntent.FLAG_IMMUTABLE);
                 // Vytvoření notifikace
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_notification)
                         .setContentTitle("Plánovač")
-                        .setContentText("Čekají vás nějaké aktivity. Zkontrolujte je!");
+                        .setContentText("Čekají vás nějaké aktivity. Zkontrolujte je!")
+                        .setContentIntent(pendingIntent) // Přidání PendingIntent jako akci po klepnutí na notifikaci
+                        .setAutoCancel(true); // Automaticky zruší notifikaci po klepnutí
 
                 // Získání NotificationManager
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
