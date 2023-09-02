@@ -14,6 +14,6 @@ Tato aplikace vám pomůže ukládat si své připomínky, nebo úkoly, a násle
 ## Instalace
 >Aplikace podporuje Android 6 a vyšší. 
 >Stáhněte si aplikaci kliknutím na odkaz a nainstalujte na vašem zařízení
+>BETA verze - některé funkce rozpracovány
 
-[Stáhnout APK](app-debug.apk){: .btn .btn-blue} 
-(BETA verze - rozpracovány něktré funkce)
+[Stáhnout APK](app-debug.apk){: .btn .btn-blue}
