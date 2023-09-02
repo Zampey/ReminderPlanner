@@ -44,4 +44,14 @@
         app:layout_constraintTop_toTopOf="@+id/titleTextView"
         app:srcCompat="@drawable/ic_notification"
         tools:ignore="UseAppTint" />
+
+    <ImageView
+        android:id="@+id/deleteRemBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/titleTextView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_delete" />
 </androidx.constraintlayout.widget.ConstraintLayout>

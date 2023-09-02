@@ -25,9 +25,10 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements OnDatabaseChangeListener {
     private DatabaseController dbc;
     public HomeFragment(DatabaseController dbc) {
+        dbc.setHomeFragmentListener(this);
         this.dbc = dbc;
     }
 
@@ -36,6 +37,13 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.home_fragment, container, false);
+
+        setupSchedule(rootView);
+        // Return the root view
+        return rootView;
+    }
+
+    public void setupSchedule(View rootView){
         ArrayList<ReminderModel> reminderList = dbc.getNextSevenDays();
         //list s připomínkami
         List<ArrayList<ReminderModel>> remindersLists = ReminderHelper.groupRemindersByDay(reminderList);
@@ -52,16 +60,18 @@ public class HomeFragment extends Fragment {
         for (int i = 0; i < dates.size(); i++) {
             DaySchedule ds = new DaySchedule(dates.get(i),remindersLists.get(i));
             dayScheduleList.add(ds);
+
         }
 
         RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(dayScheduleList);
-
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(dayScheduleList, dbc);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
+    }
 
-
-        // Return the root view
-        return rootView;
+    @Override
+    public void onDatabaseChanged() {
+        setupSchedule(this.getView());
     }
 }
