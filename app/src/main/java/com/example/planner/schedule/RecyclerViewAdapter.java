@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.planner.DB.DatabaseController;
 import com.example.planner.R;
 import com.example.planner.model.DaySchedule;
 import com.example.planner.model.ReminderModel;
@@ -17,9 +18,11 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private List<DaySchedule> dayScheduleList;
+    private DatabaseController dbc;
 
-    public RecyclerViewAdapter(List<DaySchedule> dayScheduleList) {
+    public RecyclerViewAdapter(List<DaySchedule> dayScheduleList, DatabaseController dbc) {
         this.dayScheduleList = dayScheduleList;
+        this.dbc = dbc;
     }
 
     @NonNull
@@ -34,7 +37,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.headerTextView.setText(dayScheduleList.get(position).getDate());
 
         List<ReminderModel> reminders = dayScheduleList.get(position).getReminders();
-        ReminderItemAdapter reminderItemAdapter = new ReminderItemAdapter(reminders);
+        ReminderItemAdapter reminderItemAdapter = new ReminderItemAdapter(reminders, dbc);
+        reminderItemAdapter.notifyDataSetChanged();
         holder.reminderRecyclerView.setAdapter(reminderItemAdapter);
     }
 

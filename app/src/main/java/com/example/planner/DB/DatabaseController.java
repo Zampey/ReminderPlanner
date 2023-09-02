@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.planner.HomeFragment;
+import com.example.planner.OnDatabaseChangeListener;
 import com.example.planner.model.ReminderModel;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
@@ -18,7 +20,11 @@ import java.util.List;
 import java.util.Locale;
 
 public class DatabaseController{
+    private OnDatabaseChangeListener listener;
 
+    public void setHomeFragmentListener(OnDatabaseChangeListener listener) {
+        this.listener = listener;
+    }
     private ReminderDbHelper reminderDbHelper;
     public DatabaseController(ReminderDbHelper reminderDbHelper) {
         this.reminderDbHelper = reminderDbHelper;
@@ -53,6 +59,7 @@ public class DatabaseController{
             Log.e("Database", "Failed to insert reminder.");
         }
         db.close();
+        listener.onDatabaseChanged();
     }
 
     @SuppressLint("Range")
@@ -127,7 +134,7 @@ public class DatabaseController{
                 String description = cursor.getString(cursor.getColumnIndex("description"));
                 String date = cursor.getString(cursor.getColumnIndex("date"));
                 //přidání připomínky do listu
-                ReminderModel reminderModel = new ReminderModel(title,description,date);
+                ReminderModel reminderModel = new ReminderModel(title,description,date, reminderId);
                 reminderList.add(reminderModel);
 
                 // Výpis hodnot pomocí logování nebo do konzole
@@ -152,11 +159,12 @@ public class DatabaseController{
 
         if (cursor.moveToFirst()) {
             do {
+                int reminderId = cursor.getInt(cursor.getColumnIndex("id"));
                 String title = cursor.getString(cursor.getColumnIndex("title"));
                 String description = cursor.getString(cursor.getColumnIndex("description"));
                 String date = cursor.getString(cursor.getColumnIndex("final_date"));
 
-                ReminderModel reminder = new ReminderModel(title, description, date);
+                ReminderModel reminder = new ReminderModel(title, description, date, reminderId);
                 reminders.add(reminder);
             } while (cursor.moveToNext());
         }
@@ -224,11 +232,12 @@ public class DatabaseController{
 
         if (cursor.moveToFirst()) {
             do {
+                int reminderId = cursor.getInt(cursor.getColumnIndex("id"));
                 String title = cursor.getString(cursor.getColumnIndex("title"));
                 String description = cursor.getString(cursor.getColumnIndex("description"));
                 String finalDate = cursor.getString(cursor.getColumnIndex("final_date"));
 
-                ReminderModel reminder = new ReminderModel(title, description, finalDate);
+                ReminderModel reminder = new ReminderModel(title, description, finalDate, reminderId);
                 reminders.add(reminder);
             } while (cursor.moveToNext());
         }
@@ -245,6 +254,20 @@ public class DatabaseController{
         String query = "DROP TABLE IF EXISTS reminders";
         db.execSQL(query);
         db.close();
+    }
+
+    public void deleteWholeReminder(int id){
+        SQLiteDatabase db = reminderDbHelper.getWritableDatabase();
+        // Smazání připomínky z tabulky reminders
+        String deleteReminderQuery = "DELETE FROM reminders WHERE id = ?";
+        db.execSQL(deleteReminderQuery, new String[]{String.valueOf(id)});
+
+        // Smazání všech dat pro připomínku z tabulky reminder_dates
+        String deleteReminderDatesQuery = "DELETE FROM reminder_dates WHERE reminder_id = ?";
+        db.execSQL(deleteReminderDatesQuery, new String[]{String.valueOf(id)});
+
+        db.close();
+        listener.onDatabaseChanged();
     }
 
 }
