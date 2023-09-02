@@ -15,4 +15,4 @@ Tato aplikace vám pomůže ukládat si své připomínky, nebo úkoly, a násle
 >Aplikace podporuje Android 6 a vyšší. 
 >Stáhněte si aplikaci kliknutím na odkaz a nainstalujte na vašem zařízení
 
-[Stáhnout aplikaci](https://github.com/zampey) (momentálně není k dispozici)
+[Stáhnout APK](https://github.com/zampey/ReminderPlanner/raw/master/apk/název_apk_souboru.apk) (BETA verze - rozpracovány něktré funkce)
