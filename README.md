@@ -17,7 +17,3 @@ Tato aplikace vám pomůže ukládat si své připomínky, nebo úkoly, a násle
 >BETA verze - některé funkce rozpracovány
 
 [Stáhnout APK](app-debug.apk)
-
-<a href="app-debug.apk" download>
-  <button style="background-color: #0074d9; color: #ffffff; padding: 10px 20px; border: none; cursor: pointer;">Stáhnout APK</button>
-</a>
